@@ -70,15 +70,16 @@ public class TinyDAO {
 		    }
 		}
 	}
-	public void deleteOne(TinyDTO dto) {
+	
+	public void deleteOne(String num) {
 		Connection conn = null;
 		Statement stmt = null;
+
 		try {
 		    conn = getConnection();
 		    stmt = conn.createStatement();
-		    stmt.executeQuery(String.format("delete from tiny where num = '%d' ",dto.getNum()));
-		    
-		    
+		    stmt.executeUpdate(String.format("delete from tiny where num = %s", num));
+		  
 		} catch (SQLException e) {
 			System.out.println("데이터베이스 오류: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
@@ -93,7 +94,7 @@ public class TinyDAO {
 		}
 	}
 	
-	public TinyDTO selectOne(String num) {  // tiny 테이블의 모든 자료를 가져옴
+	public TinyDTO selectOne(String num) {
 		TinyDTO dto = null;
 		Connection conn = null;
 		Statement stmt = null;
@@ -101,11 +102,11 @@ public class TinyDAO {
 		try {
 		    conn = getConnection();
 		    stmt = conn.createStatement();
-		    rs = stmt.executeQuery("SELECT * FROM tiny where num ="+num);
-		    if (rs.next()) {		    
-		    	int num1 = rs.getInt("num");
+		    rs = stmt.executeQuery("SELECT * FROM tiny where num = " + num);
+		    if (rs.next()) {
+		        int num1 = rs.getInt("num");
 		        String content = rs.getString("content");
-		        dto=new TinyDTO(num1, content);
+		        dto = new TinyDTO(num1, content);
 		    }
 		} catch (SQLException e) {
 			System.out.println("데이터베이스 오류: " + e.getMessage());
@@ -123,14 +124,15 @@ public class TinyDAO {
 		return dto;
 	}
 	
-	
 	public void updateOne(TinyDTO dto) {
 		Connection conn = null;
 		Statement stmt = null;
+
 		try {
 		    conn = getConnection();
 		    stmt = conn.createStatement();
-		    stmt.executeUpdate(String.format("UPDATE tiny SET content = '%s' WHERE num = '%d'",dto.getContent(),dto.getNum()));
+		    stmt.executeUpdate(String.format("update tiny set content = '%s' where num = %d", dto.getContent(), dto.getNum()));
+		  
 		} catch (SQLException e) {
 			System.out.println("데이터베이스 오류: " + e.getMessage());
 		} catch (ClassNotFoundException e) {

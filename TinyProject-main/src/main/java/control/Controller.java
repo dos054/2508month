@@ -32,40 +32,38 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String view = null;
-		String uri = request.getRequestURI();		//getRequestURI() : URI를 가져오는것
-		String conPath = request.getContextPath();	//getContextPath() : 프로젝트문자열만 가져옴
-		String com = uri.substring(conPath.length());	//uri에 문자열중 compath문자열만 잘라서 보여줌
+		String uri = request.getRequestURI();
+		String conPath = request.getContextPath();
+		String com = uri.substring(conPath.length());
 		
 		if (com.equals("/list") || com.equals("/")) {
 			TinyDAO dao = new TinyDAO();
 			List<TinyDTO> list = dao.selectList();
 			request.setAttribute("list", list);
 			view = "list.jsp";
-			
 		} else if (com.equals("/insertForm")) {
 			view = "redirect:insertForm.jsp";
-		}else if (com.equals("/insert")) {
+		} else if (com.equals("/insert")) {
 			String content = request.getParameter("content");
 			TinyDAO dao = new TinyDAO();
 			dao.insertOne(new TinyDTO(0, content));
 			view = "redirect:list";
-		}else if(com.equals("/delete")) {
-			int num = Integer.parseInt(request.getParameter("num"));
+		} else if (com.equals("/delete")) {
+			String num = request.getParameter("num");
 			TinyDAO dao = new TinyDAO();
-			dao.deleteOne(new TinyDTO(num,""));
+			dao.deleteOne(num);
 			view = "redirect:list";
-		}else if(com.equals("/updateForm")) {
+		} else if (com.equals("/updateForm")) {
 			String num = request.getParameter("num");
 			TinyDAO dao = new TinyDAO();
 			TinyDTO dto = dao.selectOne(num);
 			request.setAttribute("dto", dto);
-			view = "updateForm.jsp";		
-			
-		}else if(com.equals("/update")) {
-			String content = request.getParameter("content");
+			view = "updateForm.jsp";
+		} else if (com.equals("/update")) {
 			int num = Integer.parseInt(request.getParameter("num"));
+			String content = request.getParameter("content");
 			TinyDAO dao = new TinyDAO();
-			dao.updateOne(new TinyDTO(num,content));
+			dao.updateOne(new TinyDTO(num, content));
 			view = "redirect:list";
 		}
 		

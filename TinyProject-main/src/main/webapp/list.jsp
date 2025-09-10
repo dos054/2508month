@@ -21,7 +21,7 @@ th, td {padding: 10px 20px;}
 <table>
 <c:forEach var="dto" items="${list}">
 	<tr>
-	<td><a href="updateForm?num=${dto.num}"> ${dto.num}</a></td><td>${dto.content}</td><td><button type ="button" onclick = "location.href='delete?num=${dto.num}'">삭제</button></td>
+	<td><a href="updateForm?num=${dto.num}">${dto.num}</a></td><td>${dto.content}</td><td><button type="button" onclick="location.href='delete?num=${dto.num}' ">삭제</button></td>
 	</tr>
 </c:forEach>
 </table>
